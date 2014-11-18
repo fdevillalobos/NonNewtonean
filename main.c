@@ -50,11 +50,11 @@ int main(void)
         
         if(timer_count < 100){
             set(PORTE, 6);
-            m_green(ON);
+            m_green(OFF);
         }
         else{
             clear(PORTE, 6);
-            m_green(OFF);
+            m_green(ON);
         }
 
         

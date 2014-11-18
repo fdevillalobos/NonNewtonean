@@ -61,7 +61,7 @@ while ~isDone(FReader)
         % Pass x value to the drawing (Time Scope)
         step(hts1, x);
         Sound_mean = mean(x, 2);
-        Sound_mean = abs(mean(Sound_mean) * 100000);
+        Sound_mean = abs(mean(Sound_mean) * 100000)
 % %         disp(Sound_mean);
         if(Sound_mean > 70)
         %{a
