@@ -1,0 +1,5 @@
+*.o
+*.xcodeproj
+*.elf
+*.hex
+*.DS_Store
