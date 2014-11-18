@@ -15,11 +15,7 @@
 #include "m_rf.h"
 
 char in_key = 'a';
-<<<<<<< HEAD
-int time_counts = 0;
-=======
 int timer_count = 0;
->>>>>>> change_timer
 
 int main(void)
 {
