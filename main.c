@@ -70,6 +70,12 @@ int main(void)
             switch(in_key){
                 case key_e:
                     timer_count = 0;
+                    OCR1B = 15000;
+                    break;
+                    
+                case key_g:
+                    timer_count = 0;
+                    OCR1B = 5000;
                     break;
                     
                 case key_d:

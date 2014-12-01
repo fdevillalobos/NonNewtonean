@@ -61,18 +61,24 @@ while ~isDone(FReader)
         % Pass x value to the drawing (Time Scope)
         step(hts1, x);
         Sound_mean = mean(x, 2);
-        Sound_mean = abs(mean(Sound_mean) * 100000)
-% %         disp(Sound_mean);
+        Sound_mean = abs(mean(Sound_mean) * 100000);
+        disp(Sound_mean);
         if(Sound_mean > 70)
         %{a
             packet = 'e';
             disp('Threshold 1 Surpassed');
             fwrite(M2usb,packet);             % Write packet to m2
+            wrote = TRUE;
         elseif(Sound_mean > 30)
-            packet = 'r';
+            packet = 'g';
             disp('Threshold 2 Surpassed');
             fwrite(M2usb,packet);             % Write packet to m2
+            wrote = TRUE;
         %}
+        end
+        if wrote
+           wrote = FALSE;
+           pause(0.1);
         end
     end
     release(hts1); 
