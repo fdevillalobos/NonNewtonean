@@ -43,7 +43,7 @@ FReader = dsp.AudioRecorder('SampleRate', SampleRate, 'SamplesPerFrame',SamplesP
 hts1 = dsp.TimeScope('SampleRate', FReader.SampleRate,'TimeSpan', 30,'YLimits',[-2,2]);
 
 % Meaner = dsp.Mean();
-
+wrote = 0;
 
 %% Stream
 tic;
@@ -68,16 +68,16 @@ while ~isDone(FReader)
             packet = 'e';
             disp('Threshold 1 Surpassed');
             fwrite(M2usb,packet);             % Write packet to m2
-            wrote = TRUE;
+            wrote = 1;
         elseif(Sound_mean > 30)
             packet = 'g';
             disp('Threshold 2 Surpassed');
             fwrite(M2usb,packet);             % Write packet to m2
-            wrote = TRUE;
+            wrote = 1;
         %}
         end
-        if wrote
-           wrote = FALSE;
+        if (wrote == 1)
+           wrote = 0;
            pause(0.1);
         end
     end

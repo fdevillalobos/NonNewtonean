@@ -52,14 +52,13 @@ void init(void){
     clear(TCCR1A, COM1A0);
     
     // Clear at OCR1B, set at rollover. B6.
-    set(DDRB, 6);
     set(TCCR1A, COM1B1);
     clear(TCCR1A, COM1B0);
     
     // Toggle Mode on OC1C, which is multiplexed to B7
     set(DDRB, 7);
-    set(TCCR1A, COM1C1);
-    set(TCCR1A, COM1C0);
+    clear(TCCR1A, COM1C1);
+    clear(TCCR1A, COM1C0);
     
     // Set the OCR1A.
     OCR1A = 15625;  //15625
@@ -83,10 +82,10 @@ void init(void){
 	clear(TCCR3B,CS31);
 	set(TCCR3B,CS30);
     
-    // Set Mode 4: UP to OCR3A
-	clear(TCCR3B,WGM33);
+    // Set Mode 14: UP to ICR3
+	set(TCCR3B,WGM33);
 	set(TCCR3B,WGM32);
-    clear(TCCR3A,WGM31);
+    set(TCCR3A,WGM31);
 	clear(TCCR3A,WGM30);
     
     // No change at OC3A, clear at rollover which is multiplexed to C6
@@ -94,6 +93,7 @@ void init(void){
     clear(TCCR3A,COM3A0);
 
     OCR3A = 156;
+    ICR3  = 156;
 //    ICR3H = 0x9C;
 //    ICR3L = 0x40;
 //    OCR3AH = 0x90;

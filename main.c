@@ -27,15 +27,20 @@ int main(void)
     sei();
     
     // Outputs
-    set(DDRC, 6);
-    set(DDRC, 7);
-    set(DDRE, 6);
+    set(DDRC, 6);       // Dir 1
+    set(DDRC, 7);       // Dir 2
+    set(DDRE, 6);       // Enable
     set(DDRB, 1);
     set(DDRB, 2);
+    set(DDRB, 6);       // Timer 1 PWM Output
     
     // Initialize Outputs
     set(PORTF, 4);
     clear(PORTF, 6);
+    
+    // Start Direction
+    set(PORTC, 6);
+    clear(PORTC, 7);
     
 /******************************************************************************************/
 /*****************                       Code Loop                        *****************/
@@ -56,7 +61,10 @@ int main(void)
             clear(PORTE, 6);
             m_green(ON);
         }
-
+        
+        m_usb_tx_string("  Timer Count = ");
+        m_usb_tx_uint(timer_count);
+        m_usb_tx_string("                \r");
         
         if(m_usb_rx_available())
         {
@@ -64,18 +72,19 @@ int main(void)
             m_usb_tx_uint(in_key);            // Echo Char
             
             // We cannot use the RED LED!!!!!
-//            m_green(TOGGLE);
+            
 //            m_red(TOGGLE);
             
             switch(in_key){
                 case key_e:
+//                    m_green(TOGGLE);
                     timer_count = 0;
-                    OCR1B = 15000;
+//                    OCR1B = 15000;
                     break;
                     
                 case key_g:
                     timer_count = 0;
-                    OCR1B = 5000;
+//                    OCR1B = 5000;
                     break;
                     
                 case key_d:
@@ -117,9 +126,9 @@ int main(void)
                     m_usb_tx_string(" Invalid Input");
                     break;
             }                                           // End Switch Case.
-            m_usb_tx_string("  OCR1B = ");
-            m_usb_tx_uint(OCR1B);
-            m_usb_tx_string("                \r");
+//            m_usb_tx_string("  OCR1B = ");
+//            m_usb_tx_uint(OCR1B);
+//            m_usb_tx_string("                \r");
         }
     }
 
