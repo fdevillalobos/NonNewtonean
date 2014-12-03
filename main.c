@@ -79,12 +79,12 @@ int main(void)
                 case key_e:
 //                    m_green(TOGGLE);
                     timer_count = 0;
-//                    OCR1B = 15000;
+                    OCR1B = 15000;
                     break;
                     
                 case key_g:
                     timer_count = 0;
-//                    OCR1B = 5000;
+                    OCR1B = 2000;
                     break;
                     
                 case key_d:
