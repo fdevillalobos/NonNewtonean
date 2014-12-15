@@ -46,19 +46,16 @@ int main(void)
 /*****************                       Code Loop                        *****************/
 /******************************************************************************************/
     while(1){
-//        if(check(TIFR1, TOV1)){           // Check Overflow flag in Timer 1.
-//            m_red(TOGGLE);
-//            m_green(TOGGLE);
-//            set(TIFR1,TOV1);
-//        }
+    
         // Exit Screen With CTRL+A, then CTRL+\ and then y.
         
+        // Makes the last recieved signal last for a second if nothing new comes in
         if(timer_count < 100){
-            set(PORTE, 6);
+            set(PORTE, 6);          // Turn Enable ON
             m_green(OFF);
         }
         else{
-            clear(PORTE, 6);
+            clear(PORTE, 6);        // Turn Enable OFF
             m_green(ON);
         }
         
@@ -66,50 +63,33 @@ int main(void)
         m_usb_tx_uint(timer_count);
         m_usb_tx_string("                \r");
         
+        // If it recieves something over the serial port
         if(m_usb_rx_available())
         {
             in_key = m_usb_rx_char();           // Get input char
-            m_usb_tx_uint(in_key);            // Echo Char
+            m_usb_tx_uint(in_key);              // Echo Char
             
             // We cannot use the RED LED!!!!!
             
-//            m_red(TOGGLE);
-            
             switch(in_key){
                 case key_e:
-//                    m_green(TOGGLE);
+                    // Do fast speed and reset timer
                     timer_count = 0;
                     OCR1B = 15000;
                     break;
                     
                 case key_g:
+                    // Do slow speed and reset timer
                     timer_count = 0;
                     OCR1B = 2000;
                     break;
-                    
-                case key_d:
-//                    clear(PORTE, 6);
-//                    m_red(ON);
-                    break;
-                    
-                case key_f:
-                    set(PORTC, 7);
-                    clear(PORTC, 6);
-                    set(PORTB, 1);
-                    clear(PORTB, 2);
-                    break;
-                    
-                case key_r:
-                    clear(PORTC, 7);
-                    set(PORTC, 6);
-                    clear(PORTB, 1);
-                    set(PORTB, 2);
-                    break;
                 
+                // Increase duty cyle by keyboard
                 case key_plus:
                     OCR1B = OCR1B + 100;
                     break;
                     
+                // Decrease Duty Cycle by keyboard
                 case key_minus:
                     OCR1B = OCR1B - 100;
                     break;
@@ -149,11 +129,12 @@ ISR(INT2_vect){                                     // Wi-Fi Reciever Interrupt 
 
 
 // Interrupt Handler for Timer 3 Overflow.
-// 20 ms per Count.
+// Counter used to count 1s for disabeling the Motor ENABLE
 ISR(TIMER3_OVF_vect){
     timer_count += 1;
 }
 
+// Timer 3 is used to change the duty cycle pin of the motor
 ISR(TIMER1_OVF_vect){
     //
 }

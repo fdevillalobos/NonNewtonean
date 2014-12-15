@@ -29,20 +29,17 @@ flushinput(M2usb);  % Remove anything extranneous that may be in the buffer.
         
         
 %% Initialization
-%  serial
-%  s = serial('/dev/tty.usbmodem1421');%matlab serial port
-%  fopen(s);
-
 
 SamplesPerFrame = 300;
 SampleRate = 1000;
 
+% Initialize the audio input to do the "recording" of the audio and processing
 FReader = dsp.AudioRecorder('SampleRate', SampleRate, 'SamplesPerFrame',SamplesPerFrame,...
     'OutputDataType','double', 'DeviceName', 'Yeti Stereo Microphone');
 
 hts1 = dsp.TimeScope('SampleRate', FReader.SampleRate,'TimeSpan', 30,'YLimits',[-2,2]);
 
-% Meaner = dsp.Mean();
+% Placeholder variable for timing
 wrote = 0;
 
 %% Stream
@@ -63,12 +60,13 @@ while ~isDone(FReader)
         Sound_mean = mean(x, 2);
         Sound_mean = abs(mean(Sound_mean) * 100000);
         disp(Sound_mean);
+        % For loud sounds
         if(Sound_mean > 100)
         %{a
-            packet = 'e';
+            packet = 'e';                     % Configured in M2
             disp('Threshold 1 Surpassed');
             fwrite(M2usb,packet);             % Write packet to m2
-            wrote = 1;
+            wrote = 1;                        % Wrote something
         elseif(Sound_mean > 10)
             packet = 'g';
             disp('Threshold 2 Surpassed');
@@ -78,7 +76,7 @@ while ~isDone(FReader)
         end
         if (wrote == 1)
            wrote = 0;
-           pause(0.1);
+           pause(0.1);                        % Make pause for continuity
         end
     end
     release(hts1); 
