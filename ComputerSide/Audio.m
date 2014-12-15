@@ -38,7 +38,7 @@ SamplesPerFrame = 300;
 SampleRate = 1000;
 
 FReader = dsp.AudioRecorder('SampleRate', SampleRate, 'SamplesPerFrame',SamplesPerFrame,...
-    'OutputDataType','double');
+    'OutputDataType','double', 'DeviceName', 'Yeti Stereo Microphone');
 
 hts1 = dsp.TimeScope('SampleRate', FReader.SampleRate,'TimeSpan', 30,'YLimits',[-2,2]);
 
@@ -63,13 +63,13 @@ while ~isDone(FReader)
         Sound_mean = mean(x, 2);
         Sound_mean = abs(mean(Sound_mean) * 100000);
         disp(Sound_mean);
-        if(Sound_mean > 70)
+        if(Sound_mean > 100)
         %{a
             packet = 'e';
             disp('Threshold 1 Surpassed');
             fwrite(M2usb,packet);             % Write packet to m2
             wrote = 1;
-        elseif(Sound_mean > 30)
+        elseif(Sound_mean > 10)
             packet = 'g';
             disp('Threshold 2 Surpassed');
             fwrite(M2usb,packet);             % Write packet to m2
